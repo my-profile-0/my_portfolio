@@ -7,6 +7,7 @@ import {
   BarChart3,
   LayoutGrid
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { ALL_SKILLS } from '../data/portfolioData';
 import { SkillCategory } from '../types';
 import {
@@ -174,10 +175,18 @@ export const SkillsSection: React.FC = () => {
 
         {/* Compact 4-Column Skill Grid with Official Brand Logos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredSkills.map((skill) => {
+          {filteredSkills.map((skill, idx) => {
             return (
-              <div
+              <motion.div
                 key={skill.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{
+                  duration: 0.4,
+                  delay: (idx % 8) * 0.04,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="bg-slate-900/80 backdrop-blur-md rounded-2xl p-4 border border-white/10 hover:border-emerald-400/60 shadow-md hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between gap-3 group"
               >
                 <div className="flex items-center gap-3 min-w-0">
@@ -201,7 +210,7 @@ export const SkillsSection: React.FC = () => {
                 <span className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-black bg-white/10 text-slate-200 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 transition-colors shrink-0 whitespace-nowrap border border-white/5">
                   {skill.experience}
                 </span>
-              </div>
+              </motion.div>
             );
           })}
         </div>

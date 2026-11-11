@@ -6,6 +6,7 @@ import {
   Sparkles, 
   CheckCircle2, 
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { MARKETING_CAMPAIGNS } from '../data/portfolioData';
 import { CampaignCaseStudy, MarketingPlatform } from '../types';
 import { MetaLogo, GoogleAdsLogo, TikTokLogo } from './BrandLogos';
@@ -52,7 +53,13 @@ export const DigitalMarketingSection: React.FC<DigitalMarketingSectionProps> = (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-bold mb-3 uppercase tracking-wider shadow-2xs">
               <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
@@ -66,11 +73,14 @@ export const DigitalMarketingSection: React.FC<DigitalMarketingSectionProps> = (
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl border border-slate-200 shadow-xs text-xs font-semibold text-slate-700">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl border border-slate-200 shadow-xs text-xs font-semibold text-slate-700 shrink-0"
+          >
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>100% Verified Ad Accounts & Live Data</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Platform Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-12">
@@ -82,29 +92,43 @@ export const DigitalMarketingSection: React.FC<DigitalMarketingSectionProps> = (
             { id: 'ecommerce', label: 'E-Commerce / D2C', icon: null },
             { id: 'leadgen', label: 'B2B & High-Ticket', icon: null },
           ].map((tab) => (
-            <button
+            <motion.button
               key={tab.id}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setActivePlatform(tab.id as MarketingPlatform)}
               className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activePlatform === tab.id
-                  ? 'bg-slate-900 text-white shadow-xs scale-[1.02]'
+                  ? 'bg-slate-900 text-white shadow-xs'
                   : 'bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200/80 shadow-2xs'
               }`}
             >
               {tab.icon}
               <span>{tab.label}</span>
-            </button>
+            </motion.button>
           ))}
         </div>
 
         {/* Campaign Cards Grid (3-Column, Spacious, Card-based) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCampaigns.map((camp) => (
-            <div
-              key={camp.id}
-              onClick={() => onSelectCampaign(camp)}
-              className="bg-white rounded-3xl border border-slate-200/90 hover:border-emerald-400 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer group"
-            >
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence mode="popLayout">
+            {filteredCampaigns.map((camp, idx) => (
+              <motion.div
+                key={camp.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{
+                  duration: 0.45,
+                  delay: (idx % 3) * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                whileHover={{ y: -6, scale: 1.015, transition: { duration: 0.22 } }}
+                whileTap={{ scale: 0.985 }}
+                onClick={() => onSelectCampaign(camp)}
+                className="bg-white rounded-3xl border border-slate-200/90 hover:border-emerald-400 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between overflow-hidden cursor-pointer group"
+              >
               <div>
                 {/* Top Image Preview Banner */}
                 <div className="relative h-48 w-full overflow-hidden rounded-t-xl bg-slate-100">
@@ -185,9 +209,10 @@ export const DigitalMarketingSection: React.FC<DigitalMarketingSectionProps> = (
                   <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
       </div>
     </section>

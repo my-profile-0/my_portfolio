@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
+import { ScrollReveal } from './components/ScrollReveal';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { DigitalMarketingSection } from './components/DigitalMarketingSection';
@@ -18,6 +21,34 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('marketing');
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignCaseStudy | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoProject | null>(null);
+
+  // Buttery-smooth momentum scrolling with Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.6,
+    });
+
+    (window as any).__lenis = lenis;
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+      delete (window as any).__lenis;
+    };
+  }, []);
 
   // Scrollspy to automatically highlight active nav section
   useEffect(() => {
@@ -46,7 +77,12 @@ export default function App() {
     setActiveSection(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const lenis = (window as any).__lenis;
+      if (lenis) {
+        lenis.scrollTo(element, { offset: -65, duration: 1.15 });
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -62,6 +98,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-['Poppins',sans-serif] selection:bg-emerald-500 selection:text-white flex flex-col">
+      {/* Slim Persistent Top Scroll Progress Bar */}
+      <ScrollProgressBar />
+
       {/* Sticky Top Navigation */}
       <Navbar activeSection={activeSection} onNavigate={handleNavigate} />
 
@@ -74,31 +113,45 @@ export default function App() {
         />
 
         {/* 1st Section: Digital Marketing & Past Ads Performance */}
-        <DigitalMarketingSection
-          onSelectCampaign={(campaign) => setSelectedCampaign(campaign)}
-          onBookAudit={handleBookAudit}
-        />
+        <ScrollReveal yOffset={45}>
+          <DigitalMarketingSection
+            onSelectCampaign={(campaign) => setSelectedCampaign(campaign)}
+            onBookAudit={handleBookAudit}
+          />
+        </ScrollReveal>
 
         {/* 2nd Section: Video Editing & Motion Craft */}
-        <VideoEditingSection
-          onSelectVideo={(video) => setSelectedVideo(video)}
-          onBookEditing={handleBookAudit}
-        />
+        <ScrollReveal yOffset={45}>
+          <VideoEditingSection
+            onSelectVideo={(video) => setSelectedVideo(video)}
+            onBookEditing={handleBookAudit}
+          />
+        </ScrollReveal>
 
         {/* 3rd Section: Detailed Skills Matrix */}
-        <SkillsSection />
+        <ScrollReveal yOffset={40}>
+          <SkillsSection />
+        </ScrollReveal>
 
         {/* 4th Section: Verified Client Testimonials */}
-        <TestimonialsSection />
+        <ScrollReveal yOffset={40}>
+          <TestimonialsSection />
+        </ScrollReveal>
 
         {/* Value Differentiation: Why Hire Me */}
-        <WhyHireMeSection onHireClick={handleBookAudit} />
+        <ScrollReveal yOffset={40}>
+          <WhyHireMeSection onHireClick={handleBookAudit} />
+        </ScrollReveal>
 
         {/* Frequently Asked Questions */}
-        <FaqSection />
+        <ScrollReveal yOffset={40}>
+          <FaqSection />
+        </ScrollReveal>
 
         {/* 5th Section: Contact & Booking */}
-        <ContactSection />
+        <ScrollReveal yOffset={40}>
+          <ContactSection />
+        </ScrollReveal>
       </main>
 
       {/* Footer */}

@@ -11,6 +11,7 @@ import {
   ArrowUpRight,
   ShieldCheck
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface NavbarProps {
@@ -108,13 +109,15 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => 
             <span>Available for Hire</span>
           </div>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => handleNavClick('contact')}
             className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold tracking-wide transition-all flex items-center gap-1.5 shadow-md shadow-orange-500/20 cursor-pointer"
           >
             <span>Let's Talk</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
-          </button>
+          </motion.button>
         </div>
 
         {/* Mobile Hamburger Button */}

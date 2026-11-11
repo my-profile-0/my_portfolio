@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { CampaignCaseStudy } from '../types';
 import { MetaLogo, GoogleAdsLogo, TikTokLogo } from './BrandLogos';
+import { motion } from 'motion/react';
 
 interface CampaignDetailModalProps {
   campaign: CampaignCaseStudy | null;
@@ -39,8 +40,13 @@ export const CampaignDetailModal: React.FC<CampaignDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.94, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden my-8"
+      >
         
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/80">
@@ -228,7 +234,7 @@ export const CampaignDetailModal: React.FC<CampaignDetailModalProps> = ({
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 };

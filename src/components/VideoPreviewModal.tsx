@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { VideoProject } from '../types';
 import { MetaLogo, YouTubeLogo } from './BrandLogos';
+import { motion } from 'motion/react';
 
 interface VideoPreviewModalProps {
   video: VideoProject | null;
@@ -65,7 +66,10 @@ export const VideoPreviewModal: React.FC<VideoPreviewModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
-      <div 
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.94, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         className={`relative w-full ${isVertical ? 'max-w-md' : 'max-w-4xl'} bg-slate-900 text-white rounded-3xl shadow-2xl border border-slate-800 overflow-hidden my-auto transition-all`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -232,7 +236,7 @@ export const VideoPreviewModal: React.FC<VideoPreviewModalProps> = ({
           </div>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 };

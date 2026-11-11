@@ -8,6 +8,7 @@ import {
   Sparkles,
   Award
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { TESTIMONIALS } from '../data/portfolioData';
 
 export const TestimonialsSection: React.FC = () => {
@@ -34,9 +35,17 @@ export const TestimonialsSection: React.FC = () => {
 
         {/* Testimonial Cards Grid (3-Column, Breathable, Elevated) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {TESTIMONIALS.map((review) => (
-            <div
+          {TESTIMONIALS.map((review, idx) => (
+            <motion.div
               key={review.id}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.55,
+                delay: (idx % 3) * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="bg-white rounded-3xl p-8 border border-slate-200/90 hover:border-emerald-400 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group relative"
             >
               <div>
@@ -91,7 +100,7 @@ export const TestimonialsSection: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

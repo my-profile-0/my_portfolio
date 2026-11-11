@@ -13,6 +13,7 @@ import {
   Award,
   BarChart3
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { WHY_HIRE_ME_COMPARISON } from '../data/portfolioData';
 
 interface WhyHireMeSectionProps {
@@ -112,8 +113,16 @@ export const WhyHireMeSection: React.FC<WhyHireMeSectionProps> = ({ onHireClick 
             {valuePillars.map((pillar, idx) => {
               const IconComp = pillar.icon;
               return (
-                <div
+                <motion.div
                   key={idx}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    duration: 0.55,
+                    delay: idx * 0.1,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="bg-white rounded-3xl p-8 border border-slate-200/90 hover:border-emerald-400 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div>
@@ -149,7 +158,7 @@ export const WhyHireMeSection: React.FC<WhyHireMeSectionProps> = ({ onHireClick 
                     <span>Verified Growth Standard</span>
                     <Sparkles className="w-4 h-4" />
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>

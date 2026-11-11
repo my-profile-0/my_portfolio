@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   CheckCircle2
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { FAQS } from '../data/portfolioData';
 
 export const FaqSection: React.FC = () => {
@@ -78,8 +79,16 @@ export const FaqSection: React.FC = () => {
           {filteredFaqs.map((faq, idx) => {
             const isOpen = openIdx === idx;
             return (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{
+                  duration: 0.45,
+                  delay: (idx % 6) * 0.07,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className={`bg-white rounded-2xl sm:rounded-3xl border transition-all duration-300 overflow-hidden shadow-xs ${
                   isOpen
                     ? 'border-emerald-400 shadow-md ring-1 ring-emerald-400/20'
@@ -110,21 +119,31 @@ export const FaqSection: React.FC = () => {
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div className="px-6 pb-6 pt-1 border-t border-slate-100 space-y-4">
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                      {faq.answer}
-                    </p>
-                    
-                    {faq.wittyNote && (
-                      <div className="p-3.5 bg-amber-50/80 text-amber-900 rounded-2xl text-xs flex items-center gap-2.5 font-medium border border-amber-200/70">
-                        <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                        <span><strong className="font-bold">Pro Tip: </strong>{faq.wittyNote}</span>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6 pt-1 border-t border-slate-100 space-y-4">
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                          {faq.answer}
+                        </p>
+                        
+                        {faq.wittyNote && (
+                          <div className="p-3.5 bg-amber-50/80 text-amber-900 rounded-2xl text-xs flex items-center gap-2.5 font-medium border border-amber-200/70">
+                            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                            <span><strong className="font-bold">Pro Tip: </strong>{faq.wittyNote}</span>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                )}
-              </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>

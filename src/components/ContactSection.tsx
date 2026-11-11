@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { WhatsAppLogo } from './BrandLogos';
+import { motion } from 'motion/react';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -80,7 +81,13 @@ export const ContactSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Column: Direct Info & Booking Pitch */}
-          <div className="lg:col-span-5 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: -28 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 space-y-6"
+          >
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-bold mb-3 uppercase tracking-wider shadow-2xs">
                 <Mail className="w-3.5 h-3.5 text-emerald-600" />
@@ -98,7 +105,11 @@ export const ContactSection: React.FC = () => {
             <div className="space-y-3 pt-2">
               
               {/* Direct Email Card */}
-              <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between gap-4">
+              <motion.div
+                whileHover={{ y: -3, scale: 1.01 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs flex items-center justify-between gap-4"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
                     <Mail className="w-5 h-5" />
@@ -121,10 +132,12 @@ export const ContactSection: React.FC = () => {
                   {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copiedEmail ? 'Copied!' : 'Copy'}</span>
                 </button>
-              </div>
+              </motion.div>
 
               {/* WhatsApp Card with Green WhatsApp Icon */}
-              <a
+              <motion.a
+                whileHover={{ y: -3, scale: 1.01 }}
+                transition={{ duration: 0.2 }}
                 href={`https://wa.me/${PERSONAL_INFO.whatsapp.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noreferrer noopener"
@@ -148,7 +161,7 @@ export const ContactSection: React.FC = () => {
                 <div className="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-emerald-50 transition-colors shrink-0">
                   <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
                 </div>
-              </a>
+              </motion.a>
 
             </div>
 
@@ -167,10 +180,16 @@ export const ContactSection: React.FC = () => {
                 <span>Custom proposal tailored strictly to your ROAS targets</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Clean Form */}
-          <div className="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm relative">
+          <motion.div
+            initial={{ opacity: 0, x: 28 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm relative"
+          >
             
             {isSubmitted ? (
               <div className="text-center py-12 space-y-4 animate-in fade-in duration-300">
@@ -293,18 +312,20 @@ export const ContactSection: React.FC = () => {
                   />
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.015 }}
+                  whileTap={{ scale: 0.985 }}
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-sm tracking-wide transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
                 >
                   <Send className="w-4 h-4 text-slate-950" />
                   <span>{isSubmitting ? 'Sending Inquiry...' : 'Send Project Inquiry & Request Audit'}</span>
-                </button>
+                </motion.button>
               </form>
             )}
 
-          </div>
+          </motion.div>
 
         </div>
 

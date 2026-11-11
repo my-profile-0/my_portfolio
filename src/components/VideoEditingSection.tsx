@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { VIDEO_PROJECTS } from '../data/portfolioData';
 import { VideoProject, VideoCategory } from '../types';
 
@@ -39,7 +40,13 @@ export const VideoEditingSection: React.FC<VideoEditingSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold mb-3 uppercase tracking-wider shadow-xs">
               <Video className="w-3.5 h-3.5 text-emerald-400" />
@@ -53,11 +60,14 @@ export const VideoEditingSection: React.FC<VideoEditingSectionProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 shadow-xs text-xs font-bold text-emerald-400">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 shadow-xs text-xs font-bold text-emerald-400 shrink-0"
+          >
             <Flame className="w-4 h-4 text-amber-400 shrink-0" />
             <span>450+ High-Retention Videos Mastered</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Video Category Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-12">
@@ -67,28 +77,42 @@ export const VideoEditingSection: React.FC<VideoEditingSectionProps> = ({
             { id: 'facebook', label: 'Facebook Videos & Reels' },
             { id: 'youtube', label: 'YouTube Long-Form (16:9)' },
           ].map((tab) => (
-            <button
+            <motion.button
               key={tab.id}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => setActiveCategory(tab.id as VideoCategory)}
               className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeCategory === tab.id
-                  ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20 scale-[1.02]'
+                  ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
                   : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10 shadow-2xs'
               }`}
             >
               {tab.label}
-            </button>
+            </motion.button>
           ))}
         </div>
 
         {/* Video Cards Grid (4-Column on XL screens, 3 on LG) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
-          {filteredVideos.map((video) => (
-            <div
-              key={video.id}
-              onClick={() => onSelectVideo(video)}
-              className="bg-slate-900/90 backdrop-blur-md rounded-2xl border border-white/10 hover:border-emerald-400/60 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col group"
-            >
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
+          <AnimatePresence mode="popLayout">
+            {filteredVideos.map((video, idx) => (
+              <motion.div
+                key={video.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{
+                  duration: 0.45,
+                  delay: (idx % 4) * 0.06,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                whileHover={{ y: -6, scale: 1.015, transition: { duration: 0.22 } }}
+                whileTap={{ scale: 0.985 }}
+                onClick={() => onSelectVideo(video)}
+                className="bg-slate-900/90 backdrop-blur-md rounded-2xl border border-white/10 hover:border-emerald-400/60 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all overflow-hidden cursor-pointer flex flex-col group"
+              >
               {/* Video Thumbnail with Hover Overlay and Play Button */}
               <div className={`relative w-full overflow-hidden bg-slate-950 ${video.videoAspect === '9:16' ? 'h-72 sm:h-80' : 'h-52 sm:h-56'}`}>
                 <img
@@ -152,9 +176,10 @@ export const VideoEditingSection: React.FC<VideoEditingSectionProps> = ({
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Interactive Before/After Color Grading & Retention Slider */}
         <div className="bg-white/[0.04] backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl">
